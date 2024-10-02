@@ -10,6 +10,7 @@
 
 add_action( 'enqueue_block_editor_assets', 'demo_block_bindings_source_client_filters' );
 add_action( 'init', 'demo_register_meta' );
+add_action( 'init', 'demo_register_block_bindings' );
 
 add_filter( 'block_bindings_source_value', 'demo_filter_text_meta_value', 10, 3 );
 
@@ -70,6 +71,7 @@ function demo_filter_text_meta_value( $value, $source_name, $source_args ) {
  * @link https://developer.wordpress.org/news/2024/03/06/introducing-block-bindings-part-2-working-with-custom-binding-sources/#registering-a-custom-binding-source
  *
  * @return void
+ * @see demo_test_bindings()
  */
 function demo_register_block_bindings() {
 	register_block_bindings_source(
@@ -81,16 +83,22 @@ function demo_register_block_bindings() {
 	);
 }
 
+/**
+ * Callable demo test bindings function.
+ *
+ * This function checks if the 'key' in the source arguments is set and equals 'test-test'.
+ * If the condition is met, it returns 'Hello world.'; otherwise, it returns null.
+ *
+ * @param array $source_args The source arguments to check.
+ *
+ * @return string|null Returns 'Hello world.' if the 'key' is set and equals 'test-test', otherwise null.
+ */
 function demo_test_bindings( $source_args ) {
-	if ( 'hello' === $source_args['key'] && function_exists( 'hello_dolly_get_lyric' ) ) {
-		return esc_html(
-			sprintf(
-				// Translators: %s is a lyric from the Hello Dolly plugin.
-				__( '🎺 🎶 %s', 'demo' ),
-				hello_dolly_get_lyric()
-			)
-		);
+	if ( ! isset( $source_args['key'] ) || 'test-test' !== $source_args['key'] ) {
+		return null;
 	}
+
+	return 'Hello world.';
 }
 
 /**
