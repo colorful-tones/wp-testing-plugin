@@ -110,7 +110,7 @@ function demo_block_bindings_source_client_filters() {
 	wp_enqueue_script(
 		'demo-block-bindings-source-client-filters',
 		plugins_url( 'block-bindings-filters.js', __FILE__ ),
-		array( 'wp-blocks' ),
+		array( 'wp-blocks', 'wp-edit-site', 'wp-edit-post' ),
 		filemtime( plugin_dir_path( __FILE__ ) . 'block-bindings-filters.js' ),
 	);
 }
